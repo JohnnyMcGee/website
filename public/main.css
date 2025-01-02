@@ -206,9 +206,9 @@ a {
 }
 
 .btn--tertiary {
-  --btn-color: var(--color-tertiary);
-  --btn-bg-color: var(--color-on-tertiary);
-  --btn-border-color: var(--color-on-tertiary);
+  --btn-color: var(--color-on-surface);
+  --btn-bg-color: var(--color-surface);
+  --btn-border-color: var(--color-surface);
 }
 
 .header {
