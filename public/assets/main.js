@@ -4,6 +4,7 @@
 
     animateElementsInView();
     document.addEventListener("scroll", throttle(animateElementsInView, 100));
+    document.addEventListener("scroll", headerScrollListener());
 
     function throttle(fn, delay) {
         let lastCall = 0;
@@ -12,6 +13,31 @@
             if (now - lastCall < delay) return;
             lastCall = now;
             return fn(...args);
+        };
+    }
+
+    function headerScrollListener() {
+        let referenceScroll = window.scrollY;
+        let lastScroll = window.scrollY;
+
+        return () => {
+            const header = document.querySelector("header");
+
+            const dy = window.scrollY - referenceScroll;
+
+            if (dy > 100) {
+                header.classList.add("header--scrolled");
+            }
+
+            if (dy < -20 || window.scrollY < 100) {
+                header.classList.remove("header--scrolled");
+            }
+
+            if ((window.scrollY < lastScroll && window.scrollY > referenceScroll) || (window.scrollY > lastScroll && window.scrollY < referenceScroll)) {
+                referenceScroll = window.scrollY;
+            }
+
+            lastScroll = window.scrollY;
         };
     }
 
