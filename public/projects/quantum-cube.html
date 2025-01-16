@@ -1,0 +1,113 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Cube - Cloud-based Speed Cube Timer App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="stylesheet" href="/assets/project.css">
+</head>
+
+<body>
+    <header class="header">
+        <button id="menu-button">
+            <div class="hamburger">
+                <div class="hamburger_bar hamburger_bar--top"></div>
+                <div class="hamburger_bar hamburger_bar--middle"></div>
+                <div class="hamburger_bar hamburger_bar--bottom"></div>
+            </div>
+        </button>
+    </header>
+    <div id="menu-drawer" class="drawer">
+        <nav class="menu">
+            <ul class="menu_link-list">
+                <li>
+                    <a class="nav-link" href="">Quantum Cube</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="">Earth Breeze</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="">PsychoBummer</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <section class="hero-section">
+        <h1 class="uppercase animate-in color-primary">QUANTUM CUBE</h1>
+        <h6 class="uppercase animate-in">Cloud-based Speed Cubing Timer App</h6>
+    </section>
+    <main class="main-content">
+        <section class="project-description">
+            <article>
+                <p>
+                    Quantum Cube stores and protects its users' most precious data --
+                    their speed-cubing solve times. It was the first app of its kind to store solve times in the cloud,
+                    making them available across all devices. Cubers can organize their solves into sessions,
+                    visualize their statistics, and prepare for competitions with the help of the Quantum Cube app.
+                </p>
+                <div class="project-attributes">
+                    <table border="1" frame="hsides" rules="rows">
+                        <tr>
+                            <th>Backend</th>
+                            <td>Node.js, Express, Redis, PostgreSQL</td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Web Frontend
+                            </th>
+                            <td>
+                                React, Redux, Sass
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Mobile Frontend
+                            </th>
+                            <td>
+                                Flutter, Bloc, Isar DB
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Puzzles Supported
+                            </th>
+                            <td>
+                                2x2x2, 3x3x3, 4x4x4, 5x5x5, 6x6x6, 7x7x7, Pyraminx, Megaminx, Skewb, Square-1, Clock
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h4>Storing Solve Times in the Cloud</h4>
+                <p>
+                    The Quantum Cube server provides secure and highly available storage for user data.
+                    Solve times are stored in a PostgreSQL database and cached in Redis for fast access.
+                    The JSON API built with Express.js provides convenient data access for both web and native mobile
+                    clients.
+                </p>
+                <h4>React Single-Page Application</h4>
+                <p>
+                    The timer UX is smooth and responsive, with a minimalist design that puts the focus on the solve.
+                    User sessions tend to be long, with solve data and statistics continuously updating in real-time.
+                    The SPA architecture allows for a seamless user experience on the web platform.
+                </p>
+                <h4>Flutter Mobile App</h4>
+                <p>
+                    The Quantum Cube mobile apps allow cubers to take their solves on the go.
+                    Solve times are stored locally on the device, then automatically sync
+                    to the backend whenever an internet connection is available.
+                    Google's Flutter framework compiles to native code for iOS and Android,
+                    providing a consistent 60-120fps experience across all devices.
+                </p>
+                </articlej>
+        </section>
+    </main>
+</body>
+
+<script src="/assets/main.js"></script>
+
+</html>

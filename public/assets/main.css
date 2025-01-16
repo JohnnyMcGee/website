@@ -128,9 +128,20 @@ button {
 a {
   color: var(--color-tertiary);
 }
+
 /** END Base */
 
 /* BEGIN Components */
+.main-content {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 2rem 7vw;
+}
+.main-content p {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
 .hero-section {
   position: relative;
   height: 100dvh;
