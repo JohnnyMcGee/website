@@ -132,6 +132,7 @@ a {
 
 /* BEGIN Components */
 .hero-section {
+  position: relative;
   height: 100dvh;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -179,6 +180,16 @@ a {
 
 .hero-section_cta {
   margin-top: 1.5rem;
+}
+
+.hero-bg-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  object-fit: cover;
+  height: 100%;
+  object-position: top;
+  opacity: 45%;
 }
 
 .btn {
@@ -342,6 +353,10 @@ a {
 /* BEGIN Utilities */
 .uppercase {
   text-transform: uppercase;
+}
+
+.font-light {
+  font-weight: 300;
 }
 
 .color-primary {
