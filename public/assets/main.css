@@ -251,11 +251,12 @@ a {
   right: 0;
   z-index: 50;
   padding: 0.75rem 1.5rem;
-  transition: transform 200ms ease-out;
+  transition: all 200ms ease-out;
 }
 
 .header--scrolled {
   transform: translateY(-100%);
+  opacity: 0;
 }
 
 .header_logo {
