@@ -49,10 +49,10 @@
         <section class="project-description">
             <article>
                 <p>
-                    Quantum Cube stores and protects its users' most precious data --
-                    their speed-cubing solve times. It was the first app of its kind to store solve times in the cloud,
-                    making them available across all devices. Cubers can organize their solves into sessions,
-                    visualize their statistics, and prepare for competitions with the help of the Quantum Cube app.
+                    Quantum Cube is a timer app for speed cubers. Users create sessions and record their solve times,
+                    and track their statistics over time. The solves are stored in the cloud and are accessible
+                    on Quantum Cube's Android, iOS, and web apps. The simple, elegant design gets out of the user's way,
+                    so they can test their skills and prepare for competitions.
                 </p>
                 <div class="project-attributes">
                     <table border="1" frame="hsides" rules="rows">
@@ -83,29 +83,169 @@
                             <td>
                                 2x2x2, 3x3x3, 4x4x4, 5x5x5, 6x6x6, 7x7x7, Pyraminx, Megaminx, Skewb, Square-1, Clock
                             </td>
+                            1,811,707
+
+                        </tr>
+                        <tr>
+                            <th>Solves Stored in the Cloud</th>
+                            <td>Over 1.8 Million</td>
                         </tr>
                     </table>
                 </div>
 
+                <h2>Features</h2>
                 <h4>Cloud Storage for Solve Times</h4>
                 <p>
                     Quantum Cube's source of truth is a cloud-hosted PostgreSQL database.
-                    A Redis server provides server-side session storage and some caching.
-                    Web and mobile clients sync solve times to the server, where they are stored securely.
+                    It uses Redis for server-side session storage and some lightweight caching.
+                    An Express.js JSON API provides a consistent interface for the web and mobile clients.
                 </p>
                 <h4>React Single-Page Application</h4>
                 <p>
-                    The timer UX is smooth and responsive, with a minimalist design that puts the focus on the solve.
-                    User sessions tend to be long, with solve data and statistics continuously updating in real-time.
-                    The SPA architecture allows for a seamless user experience on the web platform.
+                    The React SPA provides a smooth, responsive user experience for web users.
+                    Cubing sessions can be long or short, solve data and statistics continuously updating in real time.
+                    A redux store serves nicely to manage the application state and keep the UI in sync with the
+                    backend.
                 </p>
                 <h4>Flutter Mobile App</h4>
                 <p>
-                    The Quantum Cube mobile apps allow cubers to take their solves on the go.
-                    Solve times are stored locally on the device, then automatically sync
-                    to the backend whenever an internet connection is available.
-                    Google's Flutter framework compiles to native code for iOS and Android,
-                    providing a consistent 60-120fps experience across all devices.
+                    Quantum Cube makes solve data avilable on any device, anywhere in the world.
+                    With the Flutter framework, a single codebase compiles to native code for nearly any device or
+                    platform.
+                    The mobile app also supports offline mode, so cubers can take their solves on the go.
+                    The Flutter Bloc state management library and Isar local database help to keep app interactions
+                    nearly instantaneous.
+                </p>
+
+                <h2>Engineering Challenges</h2>
+                <h3>Offline mode -- a distributed data problem</h3>
+                <h4>The Challenge:</h4>
+                <p>Imagine beating your personal best time, only to find out that your phone is offline and the solve
+                    data is lost. Unacceptable! Quantum Cube expects that users may have limited or no internet access,
+                    and the integrity of user data must be preserved. How can mobile apps reliably tolerate
+                    changes in network status and ensure that data are never lost?</p>
+                <h4>The Solution:</h4>
+                <p>
+                    To ensure data integrity and availability, Quantum Cube uses a distributed data system. A copy of
+                    the
+                    user's data is kept in device storage,
+                    and replicated in the cloud. The process generally works like this:
+                </p>
+
+                <ol>
+                    <li>
+                        Every new solve is created offline first.
+                    </li>
+                    <li>
+                        The client then attempts to POST the new solve to the server. If successful, the API responds
+                        with
+                        the new solve object, and this is added to the local database.
+                    </li>
+                    <li>Network requests which time out or fail to connect will throw the app into "UserOffline" state.
+                        In this state solves can be created locally, but not modified or deleted.
+                    </li>
+                    <li>While in "UserOffline" state, the device peridoically tries to reconnect (polling)</li>
+                    <li>Once reconnected, the device re-authenticates with the server, pulls the latest data down and
+                        pushes the offline solves up.</li>
+                </ol>
+
+                <p>
+                    For local storage, I chose to use the Isar database, which supports multiple platforms and is
+                    written in
+                    rust. This approach comes additional benefits -- advanced local querying, data type safety, and the
+                    ability to subscribe to streams of data changes.
+                </p>
+
+                <p>
+                    One common problem in replicated databases is how to handle conflicting updates and deletes. Quantum
+                    Cube works around this by following a simple rule: offline devices may create or modify offline
+                    data,
+                    but never modify <em>online</em> data. This is suitable for our use-case, since cubers rarely need
+                    to
+                    edit their solves after they are created.
+                </p>
+
+                <h3>Cube scrambles and solutions -- implementing search algorithms in Dart</h3>
+                <h4>The Challenge:</h4>
+                <p>
+                    A core feature of Quantum Cube is generating scramble instructions for the user to solve.
+                    Scrambles tell the user how to mix up the cube before starting a solve. Scramble instructions are
+                    presented in 'scramble notation', which may look something like this:
+                    <q>
+                        U2 L2 D2 U R U' L2 D U L' R' F R U' L2 F D' U2 L F'
+                    </q>
+                    <span>For more info on scramble notation, <a
+                            href="https://www.speedcube.us/blogs/notation-guides/3x3-rubiks-cube-notation"></a>see this
+                        in-depth explanation</span>
+                </p>
+                <p>
+                    If the scrambles are not random enough, users may complain that the puzzles are too easy, or don't
+                    accurately simulate a competition. On the other hand, if the scramble is too random, it may
+                    contain invalid or non-sensical moves.
+
+                    For example, the sequence <q>L R L' R2</q> may be appear valid, but it results in the same state as
+                    simply doing <q>R'</q>.
+                </p>
+
+                <h4>The Solution:</h4>
+                <p>
+                    Because Dart is a relatively new language, it lacks the cubing-related libraries available in the
+                    JavaScript ecosystem. For Quantum Cube Flutter, it was necessary to implement scramble generators
+                    from scratch in Dart. Luckily, there are many excellent resources out there on how to model Rubik's
+                    cubes,
+                    <a href="https://observablehq.com/@onionhoney/how-to-model-a-rubiks-cube">
+                        such as this one.
+                    </a>
+                </p>
+                <p>In practice there are two approaches to generating scrambles.</p>
+                <h5>1. A List of Random Moves</h5>
+                <ol>
+                    <li>
+                        Generate a list of random numeric values with a fixed length. The length will depend on the
+                        puzzle type.
+                    </li>
+                    <li>
+                        Map each number to a move in the scramble notation. It may be useful to use a lookup table for
+                        this.
+                    </li>
+                    <li>
+                        Validate the moves in the sequence to prevent duplication, reversals, or adjacent orthoganal
+                        moves (ie, U D or B' F2)
+                    </li>
+                </ol>
+
+                The random moves approach is naive, but it can work well for small, structured puzzles such as 'Clock'
+                or
+                'Pyraminx'.
+
+                <h5>2. A Solution in Reverse</h5>
+                <ol>
+                    <li>
+                        Model the puzzle and the valid moves in a data structure. A simple example is to use a 2D array
+                        representing the faces and stickers of a cube.
+                    </li>
+                    <li>
+                        Generate a random valid starting state for the puzzle. It's not important what the scramble for
+                        this state is, but it must be a valid state for the puzzle.
+                    </li>
+                    <li>
+                        Use a depth-first search algorithm -- recursively testing sequences of moves to find an optimal
+                        solution to the starting state.
+                    </li>
+                    <li>
+                        (Optional) reverse the solution. This provides the exact scramble to create the starting state.
+                        However, this is optional, since the starting state was an arbitrary permutation to begin with.
+                    </li>
+                </ol>
+                <p>
+                    For more complex puzzles, such as the 3x3x3, the second approach is more suitable. However, the DFS
+                    can quickly become time and memory constrained with large puzzles. Common approach is to break the
+                    solution into "phases", where each phase solves a subset of the puzzle. For example, the first phase
+                    may solve the edges, the second phase may solve the corners, and the third phase may orient the last
+                    layer.
+                    <a href="https://kociemba.org/math/imptwophase.htm">
+                        Kociemba's 2-phase algorithm is a famous example.
+                    </a>
                 </p>
             </article>
         </section>
