@@ -137,9 +137,12 @@ a {
   margin: 0 auto;
   padding: 2rem 7vw;
 }
-.main-content p {
+.main-content p,
+ol,
+ul {
   margin-top: 1rem;
   margin-bottom: 1.5rem;
+  line-height: 1.35;
 }
 
 .hero-section {
