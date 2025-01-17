@@ -87,12 +87,11 @@
                     </table>
                 </div>
 
-                <h4>Storing Solve Times in the Cloud</h4>
+                <h4>Cloud Storage for Solve Times</h4>
                 <p>
-                    The Quantum Cube server provides secure and highly available storage for user data.
-                    Solve times are stored in a PostgreSQL database and cached in Redis for fast access.
-                    The JSON API built with Express.js provides convenient data access for both web and native mobile
-                    clients.
+                    Quantum Cube's source of truth is a cloud-hosted PostgreSQL database.
+                    A Redis server provides server-side session storage and some caching.
+                    Web and mobile clients sync solve times to the server, where they are stored securely.
                 </p>
                 <h4>React Single-Page Application</h4>
                 <p>
