@@ -1,7 +1,4 @@
 (function () {
-  const menuButton = document.getElementById("menu-button");
-  menuButton?.addEventListener("click", handleClickMenu);
-
   animateElementsInView();
   document.addEventListener("scroll", throttle(animateElementsInView, 100));
   document.addEventListener("scroll", hideDownIcon);
@@ -41,48 +38,5 @@
     const offsetFromTop = el.getBoundingClientRect().top;
     const windowHeight = window.innerHeight;
     return maxDelay * (offsetFromTop / windowHeight);
-  }
-
-  function handleClickMenu(event) {
-    const button = event.currentTarget;
-
-    if (!button) {
-      throw new Error("Menu button not found");
-    }
-
-    const drawer = document.getElementById("menu-drawer");
-
-    if (!drawer) {
-      throw new Error("Menu drawer not found");
-    }
-
-    const isOpen = drawer.classList.contains("drawer--open");
-
-    function closeOnScroll() {
-      closeMenu(button, drawer);
-      document.removeEventListener("scroll", closeOnScroll);
-    }
-
-    if (isOpen) {
-      closeMenu(button, drawer);
-      document.removeEventListener("scroll", closeOnScroll);
-
-      return;
-    }
-
-    openMenu(button, drawer);
-    document.addEventListener("scroll", closeOnScroll);
-  }
-
-  function closeMenu(button, drawer) {
-    button.classList.remove("hamburger--open");
-    drawer.classList.remove("drawer--open");
-    drawer.setAttribute("aria-hidden", "true");
-  }
-
-  function openMenu(button, drawer) {
-    button.classList.add("hamburger--open");
-    drawer.classList.add("drawer--open");
-    drawer.removeAttribute("aria-hidden");
   }
 })();
