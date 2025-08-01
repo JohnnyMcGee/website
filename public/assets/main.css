@@ -1,3 +1,24 @@
+/* Custom fonts */
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src:
+    url(/assets/fonts/Barlow-Light.woff2) format("woff2"),
+    url(/assets/fonts/Barlow-Light.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src:
+    url(/assets/fonts/Barlow-SemiBold.woff2) format("woff2"),
+    url(/assets/fonts/Barlow-SemiBold.ttf) format("truetype");
+}
+
 /** BEGIN Settings */
 :root {
   --color-night: #090c08;
@@ -62,7 +83,7 @@ p {
 
 h1,
 h2 {
-  font-weight: 900;
+  font-weight: 600;
   line-height: 1.5;
 }
 

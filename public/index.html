@@ -5,14 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Johnny McGee - Software Engineer</title>
     <meta name="description" content="I just love writing code." />
-    <link rel="icon" href="assets/images/favicon.ico"></link>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;600&display=swap"
-      rel="stylesheet"
-    />
     <link rel="stylesheet" href="/assets/main.css" />
+    <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/Barlow-Light.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/Barlow-SemiBold.woff2" crossorigin>
+    <link rel="icon" href="assets/images/favicon.ico"></link>
   </head>
 
   <body>
@@ -148,9 +144,9 @@
           alt="LinkedIn logo"
           width="32"
           height="32"
+          loading="lazy"
         />
       </a>
-      <a href=""><img src="" alt="" /></a>
     </footer>
   </body>
 
@@ -159,7 +155,7 @@
     id="particles-js-script"
     src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"
   ></script>
-  <script async src="/assets/main.js"></script>
   <script async src="assets/particles.js"></script>
+  <script async src="/assets/main.js"></script>
   <script defer src="/assets/secret-message-🤫.js"></script>
 </html>
