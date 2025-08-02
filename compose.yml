@@ -1,8 +1,6 @@
 services:
   web:
     image: fholzer/nginx-brotli:latest
-    ports:
-      - "8080:80"
     volumes:
       - "./public:/usr/share/nginx/html"
       - "./conf:/etc/nginx/conf.d"
