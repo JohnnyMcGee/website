@@ -1,7 +1,0 @@
-services:
-  web:
-    image: fholzer/nginx-brotli:latest
-    volumes:
-      - "./public:/usr/share/nginx/html"
-      - "./conf:/etc/nginx/conf.d"
-    restart: "unless-stopped"
