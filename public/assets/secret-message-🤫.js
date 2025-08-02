@@ -1,5 +1,5 @@
-(function () {
-  const message = `
+;(function () {
+    const message = `
 🤠 Howdy ho, neighbor! 🏜️
 
 Thanks for dropping in.
@@ -13,7 +13,7 @@ or GitHub:
 https://github.com/JohnnyMcGee
 
 🖖 Nanu Nanu! 🚀
-`;
+`
 
-  console.log(message);
-})();
+    console.log(message)
+})()
