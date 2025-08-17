@@ -1,5 +1,5 @@
 ;(function () {
-    const message = `
+  const message = `
 🤠 Howdy ho, neighbor! 🏜️
 
 Thanks for dropping in.
@@ -15,5 +15,5 @@ https://github.com/JohnnyMcGee
 🖖 Nanu Nanu! 🚀
 `
 
-    console.log(message)
+  console.log(message)
 })()
