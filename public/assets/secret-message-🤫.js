@@ -7,7 +7,7 @@ Thanks for dropping in.
 If you like, you can connect with me
 
 on LinkedIn:
-https://www.linkedin.com/in/johnny-mcgee-19a181129.
+https://www.linkedin.com/in/johnnymcgee-dev/
 
 or GitHub:
 https://github.com/JohnnyMcGee
