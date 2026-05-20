@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/JohnnyMcGee/website/api/contact"
+	"github.com/JohnnyMcGee/website/api/contact/message"
 )
 
 type ContactHandler struct {
@@ -26,7 +27,7 @@ func NewContactHandler(contact *contact.Contact, logger *slog.Logger) *ContactHa
 }
 
 func (h *ContactHandler) SendMessage(w http.ResponseWriter, r *http.Request) {
-	var input contact.ContactMessageInput
+	var input message.MessageInput
 
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		h.logger.Error("FailedToDecodeRequest", "error", err)
@@ -41,7 +42,7 @@ func (h *ContactHandler) SendMessage(w http.ResponseWriter, r *http.Request) {
 		h.logger.Error("FailedToSendMessage", "error", err)
 
 		switch err {
-		case contact.ErrNameRequired, contact.ErrEmailRequired, contact.ErrMessageRequired, contact.ErrInvalidEmail:
+		case message.ErrNameRequired, message.ErrEmailRequired, message.ErrMessageRequired, message.ErrInvalidEmail:
 			h.logger.Error("ValidationError", "error", err)
 			result := ContactResult{Ok: false, Error: err.Error()}
 			if err := h.json(w, http.StatusBadRequest, result); err != nil {

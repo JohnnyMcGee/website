@@ -3,53 +3,44 @@ package contact
 import (
 	"errors"
 	"log/slog"
-	"net/mail"
+
+	"github.com/JohnnyMcGee/website/api/contact/message"
+	"github.com/JohnnyMcGee/website/api/contact/notifier"
+)
+
+var (
+	ErrFailedToSend = errors.New("failed to send message")
 )
 
 type Contact struct {
-	logger *slog.Logger
+	logger    *slog.Logger
+	notifiers []notifier.Notifier
 }
 
-type ContactMessageInput struct {
-	Name    string  `json:"name"`
-	Email   string  `json:"email"`
-	Company *string `json:"company"`
-	Message string  `json:"message"`
-}
-
-func New(logger *slog.Logger) *Contact {
+func New(notifiers []notifier.Notifier, logger *slog.Logger) *Contact {
 	return &Contact{
-		logger: logger,
+		notifiers: notifiers,
+		logger:    logger,
 	}
 }
 
-func (c *Contact) SendMessage(input ContactMessageInput) error {
+func (c *Contact) SendMessage(input message.MessageInput) error {
 	c.logger.Info("ContactMessageReceived", "name", input.Name, "email", input.Email, "company", input.Company)
-	if err := validateInput(input); err != nil {
+	if err := input.Validate(); err != nil {
 		return err
 	}
-	return nil
-}
 
-var (
-	ErrNameRequired    = errors.New("name is required")
-	ErrEmailRequired   = errors.New("email is required")
-	ErrMessageRequired = errors.New("message is required")
-	ErrInvalidEmail    = errors.New("please enter a valid email address")
-)
+	errs := make([]error, 0)
+	for _, n := range c.notifiers {
+		if err := n.ContactMessage(input); err != nil {
+			errs = append(errs, err)
+		}
+	}
 
-func validateInput(input ContactMessageInput) error {
-	if input.Name == "" {
-		return ErrNameRequired
+	if len(errs) > 0 {
+		c.logger.Error("FailedToSendMessage", "errors", errs)
+		return ErrFailedToSend
 	}
-	if input.Email == "" {
-		return ErrEmailRequired
-	}
-	if input.Message == "" {
-		return ErrMessageRequired
-	}
-	if _, err := mail.ParseAddress(input.Email); err != nil {
-		return ErrInvalidEmail
-	}
+
 	return nil
 }

@@ -10,6 +10,8 @@ import (
 	"testing"
 
 	"github.com/JohnnyMcGee/website/api/contact"
+	"github.com/JohnnyMcGee/website/api/contact/message"
+	"github.com/JohnnyMcGee/website/api/contact/notifier"
 	"github.com/stretchr/testify/require"
 )
 
@@ -55,7 +57,7 @@ func TestContactHandler_SendMessage(t *testing.T) {
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
 			logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
-			contactApi := contact.New(logger)
+			contactApi := contact.New([]notifier.Notifier{}, logger)
 			contactHandler := NewContactHandler(contactApi, logger)
 
 			req := httptest.NewRequest("POST", "/contact", bytes.NewReader([]byte(tc.input)))
@@ -68,4 +70,26 @@ func TestContactHandler_SendMessage(t *testing.T) {
 			require.Equal(t, tc.expectResult, result)
 		})
 	}
+}
+
+type MockNotifier struct {
+	called bool
+}
+
+func (m *MockNotifier) ContactMessage(input message.MessageInput) error {
+	m.called = true
+	return nil
+}
+
+func TestContactHandler_CallNotifiers(t *testing.T) {
+	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
+	mockNotifier := &MockNotifier{}
+	contactApi := contact.New([]notifier.Notifier{mockNotifier}, logger)
+	contactHandler := NewContactHandler(contactApi, logger)
+
+	input := `{ "name": "Bobby Bob", "email": "bobbybobtest0@proton.me", "company": "Bob's Business", "message": "Hello, this is a test message." }`
+	req := httptest.NewRequest("POST", "/contact", bytes.NewReader([]byte(input)))
+	rr := httptest.NewRecorder()
+	contactHandler.SendMessage(rr, req)
+	require.True(t, mockNotifier.called, "Expected notifier to be called")
 }

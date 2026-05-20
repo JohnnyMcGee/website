@@ -8,9 +8,12 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/JohnnyMcGee/website/api/config"
 	"github.com/JohnnyMcGee/website/api/contact"
+	"github.com/JohnnyMcGee/website/api/contact/notifier"
 	"github.com/JohnnyMcGee/website/api/handler"
 	"github.com/joho/godotenv"
+	"github.com/resend/resend-go/v3"
 )
 
 type ContactResult struct {
@@ -22,7 +25,7 @@ func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Printf("No .env file found: %v", err)
 	}
-	config, err := NewConfig(os.Getenv)
+	config, err := config.New(os.Getenv)
 	if err != nil {
 		log.Fatalf("error loading config: %v", err)
 	}
@@ -37,7 +40,7 @@ func main() {
 }
 
 func Run(
-	config Config,
+	config config.Config,
 	openFile func(name string, flag int, perm os.FileMode) (*os.File, error),
 	stdout io.Writer,
 ) error {
@@ -57,7 +60,9 @@ func Run(
 	logger = slog.New(slog.NewJSONHandler(f, nil))
 	logger = logger.With("version", config.Version)
 	logger.Info("ServerStarted", "host", config.Host, "port", config.Port)
-	contactApi := contact.New(logger)
+	resendClient := resend.NewClient(config.ResendApiKey)
+	resendNotifier := notifier.NewResendNotifier(resendClient, config.ResendNotifier(), logger)
+	contactApi := contact.New([]notifier.Notifier{resendNotifier}, logger)
 	contactHandler := handler.NewContactHandler(contactApi, logger)
 
 	srv.HandleFunc("/contact", contactHandler.SendMessage)
