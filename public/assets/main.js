@@ -1,4 +1,8 @@
 ;(function () {
+  contact = $('#contact')
+  console.log('contact', contact)
+  contact.on('submit', handleContactSubmit)
+
   animateElementsInView()
   document.on('scroll', throttle(animateElementsInView, 20))
   document.on('scroll', hideDownIcon)
@@ -35,5 +39,29 @@
     const offsetFromTop = el.getBoundingClientRect().top
     const windowHeight = window.innerHeight
     return maxDelay * (offsetFromTop / windowHeight)
+  }
+
+  function handleContactSubmit(event) {
+    console.log('Submitting contact form...')
+    event.preventDefault()
+    const form = event.target
+    const data = Object.fromEntries(new FormData(form).entries())
+
+    fetch(form.action, {
+      method: form.method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+      .then(response => {
+        if (response.ok) {
+          alert('Message sent successfully!')
+          form.reset()
+        } else {
+          alert('Failed to send message. Please try again later.')
+        }
+      })
+      .catch(() => {
+        alert('An error occurred. Please try again later.')
+      })
   }
 })()

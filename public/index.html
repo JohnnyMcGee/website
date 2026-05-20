@@ -549,6 +549,34 @@
         </article>
       </div>
     </section>
+
+    <section class="hero-section hero-section--tertiary">
+      <h2 class="uppercase animate-in">Contact</h2>
+      <p class="animate-in">
+        I'm currently open to new opportunities. If you have a project you'd like to collaborate on
+        or just want to say hi, feel free to reach out!
+      </p>
+      <form id="contact" action="/api/contact" method="post">
+        <label>
+          <span>Name</span>
+          <input type="text" name="name" autocomplete="name" value="" />
+        </label>
+        <label>
+          <span> Email </span>
+          <input type="email" name="email" autocomplete="email" value="" />
+        </label>
+        <label>
+          <span>Company</span>
+          <input type="text" name="company" autocomplete="organization" value="" />
+        </label>
+        <label>
+          <span>Message</span>
+          <textarea name="message" autocomplete="off" value="" rows="5"></textarea>
+        </label>
+        <button class="btn btn--tertiary" type="submit">Send</button>
+      </form>
+    </section>
+
     <footer class="site-footer">
       <a href="https://github.com/JohnnyMcGee" title="GitHub">
         <svg width="32" height="32" viewBox="0 0 96 98" xmlns="http://www.w3.org/2000/svg">

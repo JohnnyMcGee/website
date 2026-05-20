@@ -3,6 +3,17 @@ services:
         build: .
         restart: unless-stopped
         ports: 
-          - "80:80"
+          - "4080:80"
         volumes:
           - "./public:/usr/share/nginx/html"
+    api:
+        build: ./api
+        restart: unless-stopped
+        environment:
+          HOST: 0.0.0.0
+          PORT: 8000
+          VERSION: 0.0.0
+          RESEND_API_KEY: ${RESEND_API_KEY}
+          RESEND_FROM_EMAIL: ${RESEND_FROM_EMAIL}
+          CONTACT_EMAIL: ${CONTACT_EMAIL}
+
