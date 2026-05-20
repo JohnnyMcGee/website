@@ -14,6 +14,7 @@ import (
 	"github.com/JohnnyMcGee/website/api/handler"
 	"github.com/joho/godotenv"
 	"github.com/resend/resend-go/v3"
+	"github.com/rs/cors"
 )
 
 type ContactResult struct {
@@ -67,7 +68,9 @@ func Run(
 
 	srv.HandleFunc("/contact", contactHandler.SendMessage)
 
-	if err := http.ListenAndServe(":8000", srv); err != nil {
+	handler := cors.Default().Handler(srv)
+
+	if err := http.ListenAndServe(fmt.Sprintf("%s:%s", config.Host, config.Port), handler); err != nil {
 		return fmt.Errorf("failed to start server: %w", err)
 	}
 
