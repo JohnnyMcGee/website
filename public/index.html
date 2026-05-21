@@ -195,6 +195,13 @@
       /** END Base */
 
       /* BEGIN Components */
+      .title-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        row-gap: 0.5rem;
+      }
+
       .hero-subtitle {
         font-size: 1.25rem;
         letter-spacing: 0.2em;
@@ -607,10 +614,12 @@
       <!-- Particles -->
       <div id="particles-js"></div>
 
-      <h1 class="uppercase animate-in">
-        JOHNNY MCGEE <em class="color-primary animated-glow">.dev</em>
-      </h1>
-      <span class="uppercase animate-in hero-subtitle">Software Engineer</span>
+      <div class="title-container fade-out-on-scroll">
+        <h1 class="uppercase animate-in">
+          JOHNNY MCGEE <em class="color-primary animated-glow">.dev</em>
+        </h1>
+        <span class="uppercase animate-in hero-subtitle">Software Engineer</span>
+      </div>
 
       <!-- Arrow down icon -->
       <div class="down-icon">

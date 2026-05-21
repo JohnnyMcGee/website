@@ -1,11 +1,12 @@
 ;(function () {
-  contact = $('#contact')
-  console.log('contact', contact)
+  const contact = $('#contact')
   contact.on('submit', handleContactSubmit)
 
+  const fadeElements = $$('.fade-out-on-scroll')
   animateElementsInView()
   document.on('scroll', throttle(animateElementsInView, 20))
   document.on('scroll', hideDownIcon)
+  document.on('scroll', fadeOutOnScroll)
 
   function hideDownIcon() {
     if (window.scrollY >= window.innerHeight) {
@@ -42,7 +43,6 @@
   }
 
   function handleContactSubmit(event) {
-    console.log('Submitting contact form...')
     event.preventDefault()
     const form = event.target
     const data = Object.fromEntries(new FormData(form).entries())
@@ -63,5 +63,14 @@
       .catch(() => {
         alert('An error occurred. Please try again later.')
       })
+  }
+
+  function fadeOutOnScroll() {
+    const scrollY = window.scrollY
+    const windowHeight = window.innerHeight
+
+    fadeElements.forEach(el => {
+      el.style.opacity = Math.max(0, 1 - scrollY / windowHeight)
+    })
   }
 })()
