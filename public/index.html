@@ -104,6 +104,10 @@
         font-weight: 300;
       }
 
+      * {
+        box-sizing: border-box;
+      }
+
       h1,
       h2,
       h3,
@@ -455,9 +459,15 @@
       }
 
       .contact-card {
-        width: 100%;
+        width: calc(100% - 5vw);
         max-width: 48rem;
         margin-block: 2rem;
+      }
+
+      @media screen and (min-width: 48rem) {
+        .card {
+          padding: 2rem;
+        }
       }
 
       #contact button[type='submit'] {
