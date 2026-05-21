@@ -53,28 +53,36 @@
       !formData.get('name') || !formData.get('email') || !formData.get('message')
     )
   }
-  Input
-  function handleContactSubmit(event) {
+
+  async function handleContactSubmit(event) {
     event.preventDefault()
     const form = event.target
+    const errorEl = $('#contact .error')
     const data = Object.fromEntries(new FormData(form).entries())
+    // const data = { invalid: 'payload' }
 
-    fetch(form.action, {
-      method: form.method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    })
-      .then(response => {
-        if (response.ok) {
-          alert('Message sent successfully!')
-          form.reset()
-        } else {
-          alert('Failed to send message. Please try again later.')
-        }
+    try {
+      const res = await fetch(form.action, {
+        method: form.method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
       })
-      .catch(() => {
-        alert('An error occurred. Please try again later.')
-      })
+      const body = await res.json()
+
+      if (response.ok) {
+        if (errorEl) errorEl.textContent = ''
+        form.classList.add('success')
+        form.reset()
+        return
+      }
+
+      console.error('Contact form submission failed:', response.statusText, body.error)
+
+      if (errorEl) errorEl.textContent = body.error
+    } catch (e) {
+      console.error('Contact form submission error:', e)
+      if (errorEl) errorEl.textContent = 'An error occurred. Please try again later.'
+    }
   }
 
   function fadeOutOnScroll() {

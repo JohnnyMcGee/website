@@ -60,6 +60,7 @@
         --color-pine-green: #136f63;
         --color-yinmn-blue: #4c6085;
         --color-dark-green: #003330;
+        --color-classic-rose: #a50000;
         --font-barlow: 'Barlow', Arial, Verdana, sans-serif;
         --font-hero: 6rem;
         --font-4xl: 4rem;
@@ -80,6 +81,7 @@
         --color-bg: var(--color-night);
         --color-on-bg: var(--color-lavender);
         --color-primary: var(--color-spring-green);
+        --color-error: var(--color-classic-rose);
         --color-on-primary: var(--color-night);
         --color-surface: var(--color-dark-green);
         --gradient-surface: linear-gradient(135deg, #08514c 0%, #002321 100%);
@@ -490,6 +492,19 @@
         position: relative;
       }
 
+      .error {
+        color: var(--color-error);
+        background: var(--color-on-surface);
+        padding: 0.125rem 0.5rem;
+        border-radius: var(--radius-sm);
+        font-weight: 600;
+        font-size: var(--font-base);
+      }
+
+      #contact .error {
+        align-self: center;
+      }
+
       #contact-success {
         position: absolute;
         top: 0;
@@ -720,6 +735,7 @@
             <span>Message</span>
             <textarea required name="message" autocomplete="off" value="" rows="5"></textarea>
           </label>
+          <span class="error"></span>
           <button class="btn btn--secondary" type="submit" disabled>Contact me</button>
           <div id="contact-success">
             <h2>Got It!</h2>
