@@ -1,11 +1,14 @@
 ;(function () {
   const contact = $('#contact')
   contact.on('submit', handleContactSubmit)
+  contact.on('input', handleContactInput)
 
-  const fadeElements = $$('.fade-out-on-scroll')
   animateElementsInView()
   document.on('scroll', throttle(animateElementsInView, 20))
   document.on('scroll', hideDownIcon)
+
+  const fadeElements = $$('.fade-out-on-scroll')
+  fadeOutOnScroll()
   document.on('scroll', fadeOutOnScroll)
 
   function hideDownIcon() {
@@ -42,6 +45,15 @@
     return maxDelay * (offsetFromTop / windowHeight)
   }
 
+  function handleContactInput(event) {
+    const form = event.target.form
+    const formData = new FormData(form)
+    $('#contact [type="submit"]').toggleAttribute(
+      'disabled',
+      !formData.get('name') || !formData.get('email') || !formData.get('message')
+    )
+  }
+  Input
   function handleContactSubmit(event) {
     event.preventDefault()
     const form = event.target
