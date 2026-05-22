@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"log"
 	"log/slog"
 	"net/http"
@@ -34,7 +33,6 @@ func main() {
 	if err := Run(
 		config,
 		os.OpenFile,
-		os.Stdout,
 	); err != nil {
 		log.Fatalf("server error: %v", err)
 	}
@@ -43,7 +41,6 @@ func main() {
 func Run(
 	config config.Config,
 	openFile func(name string, flag int, perm os.FileMode) (*os.File, error),
-	stdout io.Writer,
 ) error {
 	srv := http.NewServeMux()
 	var logger *slog.Logger
