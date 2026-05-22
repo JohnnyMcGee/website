@@ -18,6 +18,6 @@ FROM alpine:3.23 AS final
 
 COPY --from=builder /app /bin/app
 
-EXPOSE 8000
+EXPOSE 80
 
 CMD ["bin/app"]
