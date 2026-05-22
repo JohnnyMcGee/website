@@ -11,7 +11,7 @@ services:
         restart: unless-stopped
         environment:
           HOST: 0.0.0.0
-          PORT: 8000
+          PORT: 80
           VERSION: 0.0.0
           RESEND_API_KEY: ${RESEND_API_KEY}
           RESEND_FROM_EMAIL: ${RESEND_FROM_EMAIL}
