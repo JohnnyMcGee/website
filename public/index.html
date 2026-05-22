@@ -40,6 +40,16 @@
           url(/assets/fonts/Barlow-SemiBold.ttf) format('truetype');
       }
 
+      @font-face {
+        font-family: 'SpaceMono';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src:
+          url(/assets/fonts/SpaceMono-Regular.woff2) format('woff2'),
+          url(/assets/fonts/SpaceMono-Regular.ttf) format('truetype');
+      }
+
       /** BEGIN Settings */
       :root {
         --color-night: #090c08;
@@ -50,6 +60,7 @@
         --color-pine-green: #136f63;
         --color-yinmn-blue: #4c6085;
         --color-dark-green: #003330;
+        --color-classic-rose: #a50000;
         --font-barlow: 'Barlow', Arial, Verdana, sans-serif;
         --font-hero: 6rem;
         --font-4xl: 4rem;
@@ -62,6 +73,7 @@
         --font-sm: 0.875rem;
         --font-xs: 0.75rem;
         --radius-sm: 0.25rem;
+        --radius-md: 0.75rem;
       }
 
       /* TODO: Make a light theme */
@@ -69,14 +81,17 @@
         --color-bg: var(--color-night);
         --color-on-bg: var(--color-lavender);
         --color-primary: var(--color-spring-green);
+        --color-error: var(--color-classic-rose);
         --color-on-primary: var(--color-night);
         --color-surface: var(--color-dark-green);
+        --gradient-surface: linear-gradient(135deg, #08514c 0%, #002321 100%);
         --color-on-surface: var(--color-lavender);
         --color-secondary: var(--color-lavender);
         --color-on-secondary: var(--color-night);
         --color-tertiary: var(--color-moonstone);
         --color-on-tertiary: var(--color-night);
         --font-primary: var(--font-barlow);
+        --font-secondary: 'SpaceMono', monospace;
       }
       /** END Settings */
 
@@ -89,6 +104,10 @@
         color: var(--color-on-bg);
         font-family: var(--font-primary);
         font-weight: 300;
+      }
+
+      * {
+        box-sizing: border-box;
       }
 
       h1,
@@ -163,7 +182,7 @@
       }
 
       a,
-      button {
+      button:not(:disabled) {
         cursor: pointer;
       }
 
@@ -171,9 +190,20 @@
         color: var(--color-tertiary);
       }
 
+      a:focus {
+        outline: var(--color-primary) solid 1px;
+      }
+
       /** END Base */
 
       /* BEGIN Components */
+      .title-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        row-gap: 0.5rem;
+      }
+
       .hero-subtitle {
         font-size: 1.25rem;
         letter-spacing: 0.2em;
@@ -197,6 +227,7 @@
 
       .hero-section--secondary {
         background: var(--color-surface);
+        background: var(--gradient-surface);
         color: var(--color-on-surface);
       }
 
@@ -326,11 +357,18 @@
           box-shadow 150ms ease-in-out;
       }
 
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
       a.btn {
         text-decoration: none;
       }
 
-      .btn:hover {
+      .btn:hover:not(:disabled),
+      .btn:focus:not(:disabled) {
+        outline: none;
         text-shadow: 0 0 1.5px var(--btn-color);
         box-shadow:
           0 0 2px var(--btn-border-color),
@@ -373,6 +411,131 @@
         background-repeat: no-repeat;
         background-size: cover;
         background-position: 50% 50%;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        row-gap: 1rem;
+      }
+
+      label {
+        text-transform: uppercase;
+        display: flex;
+        font-size: var(--font-sm);
+        flex-direction: column;
+        align-items: start;
+        row-gap: 0.25rem;
+        transition: color 150ms ease-in-out;
+      }
+
+      label:has(input:focus),
+      label:has(textarea:focus) {
+        color: var(--color-primary);
+      }
+
+      input,
+      textarea {
+        font-family: var(--font-secondary);
+        padding: 0.5rem;
+        border-radius: var(--radius-sm);
+        border: 2px solid var(--color-on-bg);
+        background: transparent;
+        color: var(--color-on-bg);
+        width: 100%;
+        box-sizing: border-box;
+        transition: all 150ms ease-in-out;
+        font-size: var(--font-base);
+      }
+
+      input:focus,
+      textarea:focus {
+        background: var(--color-on-primary);
+        outline: none;
+        border-color: var(--color-primary);
+        color: var(--color-primary);
+        box-shadow:
+          0 0 2px var(--color-primary),
+          0 0 4px var(--color-primary),
+          0 0 6px var(--color-primary);
+      }
+
+      .card {
+        background: var(--color-surface);
+        background: var(--gradient-surface);
+        color: var(--color-on-surface);
+        padding: 1rem;
+        border-radius: var(--radius-md);
+        box-shadow:
+          0 1px 2px 0 rgb(0 0 0 / 0.05),
+          0 2px 4px -1px rgb(0 0 0 / 0.1),
+          0 4px 6px -2px rgb(0 0 0 / 0.1);
+      }
+
+      .contact-card {
+        width: calc(100% - 5vw);
+        max-width: 48rem;
+        margin-block: 2rem;
+      }
+
+      @media screen and (min-width: 48rem) {
+        .card {
+          padding: 2rem;
+        }
+      }
+
+      #contact button[type='submit'] {
+        margin-top: 0.5rem;
+      }
+
+      #contact {
+        position: relative;
+      }
+
+      .error {
+        color: var(--color-error);
+        background: var(--color-on-surface);
+        padding: 0.125rem 0.5rem;
+        border-radius: var(--radius-sm);
+        font-weight: 600;
+        font-size: var(--font-base);
+      }
+
+      #contact .error {
+        align-self: center;
+      }
+
+      #contact-success {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        row-gap: 1rem;
+        opacity: 0;
+        pointer-events: none;
+        height: 60%;
+        justify-content: center;
+      }
+
+      #contact > * {
+        transition: opacity 500ms ease-in-out;
+      }
+
+      #contact.success #contact-success {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      #contact.success > *:not(#contact-success) {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      #contact-success {
+        font-size: var(--font-md);
       }
 
       /* END Components */
@@ -471,10 +634,12 @@
       <!-- Particles -->
       <div id="particles-js"></div>
 
-      <h1 class="uppercase animate-in">
-        JOHNNY MCGEE <em class="color-primary animated-glow">.dev</em>
-      </h1>
-      <span class="uppercase animate-in hero-subtitle">Software Engineer</span>
+      <div class="title-container fade-out-on-scroll">
+        <h1 class="uppercase animate-in">
+          JOHNNY MCGEE <em class="color-primary animated-glow">.dev</em>
+        </h1>
+        <span class="uppercase animate-in hero-subtitle">Software Engineer</span>
+      </div>
 
       <!-- Arrow down icon -->
       <div class="down-icon">
@@ -549,6 +714,39 @@
         </article>
       </div>
     </section>
+
+    <section class="hero-section">
+      <div class="card contact-card animate-in">
+        <form id="contact">
+          <h2 class="uppercase">Contact Me</h2>
+          <noscript>
+            <p>This contact form requires JavaScript to submit.</p>
+          </noscript>
+          <label>
+            <span>Name</span>
+            <input required type="text" name="name" autocomplete="name" value="" />
+          </label>
+          <label>
+            <span> Email </span>
+            <input required type="email" name="email" autocomplete="email" value="" />
+          </label>
+          <label>
+            <span>Company</span>
+            <input type="text" name="company" autocomplete="organization" value="" />
+          </label>
+          <label>
+            <span>Message</span>
+            <textarea required name="message" autocomplete="off" value="" rows="5"></textarea>
+          </label>
+          <button class="btn btn--secondary" type="submit" disabled>Contact me</button>
+          <div id="contact-success">
+            <h2>Got It!</h2>
+            <p>Thanks for reaching out, I'll get back to you soon 🤠</p>
+          </div>
+        </form>
+      </div>
+    </section>
+
     <footer class="site-footer">
       <a href="https://github.com/JohnnyMcGee" title="GitHub">
         <svg width="32" height="32" viewBox="0 0 96 98" xmlns="http://www.w3.org/2000/svg">
