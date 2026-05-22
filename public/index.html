@@ -717,8 +717,11 @@
 
     <section class="hero-section">
       <div class="card contact-card animate-in">
-        <form id="contact" action="/api/contact" method="post">
+        <form id="contact">
           <h2 class="uppercase">Contact Me</h2>
+          <noscript>
+            <p>This contact form requires JavaScript to submit.</p>
+          </noscript>
           <label>
             <span>Name</span>
             <input required type="text" name="name" autocomplete="name" value="" />
