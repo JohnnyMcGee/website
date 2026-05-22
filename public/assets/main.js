@@ -57,31 +57,45 @@
   async function handleContactSubmit(event) {
     event.preventDefault()
     const form = event.target
-    const errorEl = $('#contact .error')
     const data = Object.fromEntries(new FormData(form).entries())
-    // const data = { invalid: 'payload' }
+    const { ok, error } = await sendMessage(data)
 
+    if (!ok) {
+      console.error('Contact form submission failed:', error)
+      $('#contact button[type="submit"]')?.insertAdjacentElement(
+        'beforebegin',
+        createErrorEl(error)
+      )
+      return
+    }
+
+    for (const el of $$('#contact .error')) {
+      el.remove()
+    }
+    form.classList.add('success')
+    form.reset()
+  }
+
+  function createErrorEl(message) {
+    const el = document.createElement('div')
+    el.className = 'error'
+    el.textContent = message
+    return el
+  }
+
+  async function sendMessage(data) {
     try {
-      const res = await fetch(form.action, {
-        method: form.method,
+      const url = '/api/contact'
+      const res = await fetch(url, {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       })
       const body = await res.json()
-
-      if (response.ok) {
-        if (errorEl) errorEl.textContent = ''
-        form.classList.add('success')
-        form.reset()
-        return
-      }
-
-      console.error('Contact form submission failed:', response.statusText, body.error)
-
-      if (errorEl) errorEl.textContent = body.error
+      return body
     } catch (e) {
-      console.error('Contact form submission error:', e)
-      if (errorEl) errorEl.textContent = 'An error occurred. Please try again later.'
+      console.error('Error sending message:', e)
+      return { ok: false, error: 'An error occurred. Please try again later.' }
     }
   }
 
