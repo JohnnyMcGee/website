@@ -1,15 +1,17 @@
 ;(function () {
-  const contact = $('#contact')
-  contact.on('submit', handleContactSubmit)
-  contact.on('input', handleContactInput)
-
   animateElementsInView()
   document.on('scroll', throttle(animateElementsInView, 20))
   document.on('scroll', hideDownIcon)
 
-  const fadeElements = $$('.fade-out-on-scroll')
-  fadeOutOnScroll()
-  document.on('scroll', fadeOutOnScroll)
+  document.on('DOMContentLoaded', () => {
+    const contact = $('#contact')
+    contact.on('submit', handleContactSubmit)
+    contact.on('input', handleContactInput)
+
+    const fadeElements = $$('.fade-out-on-scroll')
+    fadeOutOnScroll(fadeElements)
+    document.on('scroll', () => fadeOutOnScroll(fadeElements))
+  })
 
   function hideDownIcon() {
     if (window.scrollY >= window.innerHeight) {
@@ -99,11 +101,11 @@
     }
   }
 
-  function fadeOutOnScroll() {
+  function fadeOutOnScroll(els) {
     const scrollY = window.scrollY
     const windowHeight = window.innerHeight
 
-    fadeElements.forEach(el => {
+    els.forEach(el => {
       el.style.opacity = Math.max(0, 1 - scrollY / windowHeight)
     })
   }
