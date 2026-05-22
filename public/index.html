@@ -292,55 +292,6 @@
         height: 70dvh;
       }
 
-      .project-grid {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr);
-        width: max-content;
-        max-width: 100%;
-        margin-inline: auto;
-      }
-
-      @media screen and (min-width: 48rem) {
-        .project-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-      }
-
-      @media screen and (min-width: 65rem) {
-        .project-grid {
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-      }
-
-      .project-grid_item {
-        padding: 1.5rem;
-        display: flex;
-        justify-content: start;
-        align-items: center;
-        flex-direction: column;
-        row-gap: 1rem;
-      }
-
-      .project-grid_item p {
-        min-height: 5rem;
-      }
-
-      .project-grid_media {
-        width: 100%;
-        height: auto;
-        max-width: 24rem;
-        position: relative;
-        aspect-ratio: 3/2;
-      }
-
-      .project-grid_media img,
-      .project-grid_media video {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        border-radius: var(--radius-sm);
-      }
-
       .hero-section.projects {
         height: max-content;
         min-height: 100dvh;
@@ -352,6 +303,34 @@
 
       .projects h2 {
         padding-block: 1.5rem;
+      }
+
+      .project {
+        display: grid;
+        grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+        column-gap: 1.5rem;
+        align-items: start;
+      }
+
+      .project__eyebrow {
+        text-transform: uppercase;
+        font-size: var(--font-sm);
+        color: var(--color-primary);
+      }
+
+      .project__details {
+        display: flex;
+        text-align: left;
+        flex-direction: column;
+        row-gap: 1rem;
+        padding-left: 5vw;
+      }
+
+      .project__media {
+        width: 100%;
+        display: block;
+        object-fit: cover;
+        border-radius: var(--radius-sm);
       }
 
       .btn {
@@ -368,6 +347,7 @@
         transition:
           text-shadow 100ms ease-in-out,
           box-shadow 150ms ease-in-out;
+        text-align: center;
       }
 
       .btn:disabled {
@@ -676,7 +656,37 @@
         <!-- Additional required wrapper -->
         <div class="swiper-wrapper">
           <!-- Slides -->
-          <div class="swiper-slide">Slide 1</div>
+          <div class="swiper-slide">
+            <div class="project">
+              <div class="project__details">
+                <div>
+                  <span class="project__eyebrow">Quantum Cube</span>
+                  <h3 class="project__header">Flutter Native Mobile + Web App</h3>
+                </div>
+
+                <p>
+                  <a
+                    href="https://youtu.be/fW6qNQFX8xw?si=fZTrRahPfSJKBCOx&t=301"
+                    target="_blank"
+                    style="color: inherit"
+                    >Speed cubing</a
+                  >
+                  timer app. Sync your best solves to the cloud using the Quantum Cube iOS, Android
+                  and web apps. Use your personalized statistics dashboard to track and improve your
+                  skill over time.
+                </p>
+                <a class="btn btn--secondary" href="https://quantumcube.io">View</a>
+              </div>
+
+              <a href="https://quantumcube.io" style="text-decoration: none">
+                <div class="project__media">
+                  <video loop muted autoplay playsinline>
+                    <source src="/assets/videos/quantum-cube-clip-3-compressed.mp4" />
+                  </video>
+                </div>
+              </a>
+            </div>
+          </div>
           <div class="swiper-slide">Slide 2</div>
           <div class="swiper-slide">Slide 3</div>
           ...
