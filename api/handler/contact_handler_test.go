@@ -3,6 +3,7 @@ package handler
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"net/http/httptest"
@@ -92,4 +93,23 @@ func TestContactHandler_CallNotifiers(t *testing.T) {
 	rr := httptest.NewRecorder()
 	contactHandler.SendMessage(rr, req)
 	require.True(t, mockNotifier.called, "Expected notifier to be called")
+}
+
+type FailingNotifier struct{}
+
+func (f *FailingNotifier) ContactMessage(input message.MessageInput) error {
+	return fmt.Errorf("notifier failed")
+}
+
+func TestContactHandler_FailsWhenNotifierFails(t *testing.T) {
+	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
+	failingNotifier := &FailingNotifier{}
+	contactApi := contact.New([]notifier.Notifier{failingNotifier}, logger)
+	contactHandler := NewContactHandler(contactApi, logger)
+
+	input := `{ "name": "Bobby Bob", "email": "test@test.com", "company": "Bob's Business", "message": "Hello, this is a test message." }`
+	req := httptest.NewRequest("POST", "/contact", bytes.NewReader([]byte(input)))
+	rr := httptest.NewRecorder()
+	contactHandler.SendMessage(rr, req)
+	require.Equal(t, http.StatusInternalServerError, rr.Code)
 }
