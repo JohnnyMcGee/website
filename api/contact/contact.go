@@ -25,7 +25,7 @@ func New(notifiers []notifier.Notifier, logger *slog.Logger) *Contact {
 }
 
 func (c *Contact) SendMessage(input message.MessageInput) error {
-	c.logger.Info("ContactMessageReceived", "name", input.Name, "email", input.Email, "company", input.Company)
+	c.logger.Info("ContactMessageReceived")
 	if err := input.Validate(); err != nil {
 		return err
 	}
