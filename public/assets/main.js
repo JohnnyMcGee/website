@@ -2,6 +2,7 @@
   animateElementsInView()
   document.on('scroll', throttle(animateElementsInView, 20))
   document.on('scroll', hideDownIcon)
+  window.initSwiper = initSwiper
 
   document.on('DOMContentLoaded', () => {
     const contact = $('#contact')
@@ -107,6 +108,30 @@
 
     els.forEach(el => {
       el.style.opacity = Math.max(0, 1 - scrollY / windowHeight)
+    })
+  }
+
+  function initSwiper() {
+    console.log('Initializing swiper...')
+    const swiper = new window.Swiper('.swiper', {
+      // Optional parameters
+      loop: true,
+
+      // If we need pagination
+      pagination: {
+        el: '.swiper-pagination'
+      },
+
+      // Navigation arrows
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev'
+      },
+
+      // And if we need scrollbar
+      scrollbar: {
+        el: '.swiper-scrollbar'
+      }
     })
   }
 })()

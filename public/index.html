@@ -18,6 +18,7 @@
       href="/assets/fonts/Barlow-SemiBold.woff2"
       crossorigin />
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
     <style>
       /* Custom fonts */
       @font-face {
@@ -92,7 +93,14 @@
         --color-on-tertiary: var(--color-night);
         --font-primary: var(--font-barlow);
         --font-secondary: 'SpaceMono', monospace;
+
+        /* Swiper Carousel Theming */
+        --swiper-theme-color: var(--color-primary);
+        --swiper-navigation-size: 2rem;
+        --swiper-navigation-sides-offset: 1rem;
+        --swiper-navigation-top-offset: calc(100% - 1rem);
       }
+
       /** END Settings */
 
       /** BEGIN Base */
@@ -277,6 +285,11 @@
         100% {
           animation-timing-function: ease-out;
         }
+      }
+
+      .swiper {
+        width: 100%;
+        height: 70dvh;
       }
 
       .project-grid {
@@ -613,7 +626,7 @@
       id="particles-js-script"
       src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script async src="assets/particles.js"></script>
-    <script async src="./assets/main.js"></script>
+    <script async src="./assets/main.js?v=1"></script>
     <script defer src="./assets/secret-message-🤫.js"></script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-0H5BFB82QS"></script>
@@ -658,6 +671,24 @@
     <!-- Project Grid -->
     <section class="hero-section hero-section--secondary projects">
       <h2 style="grid-column: 1 / span all" class="uppercase animate-in">Projects</h2>
+      <!-- Slider main container -->
+      <div class="swiper">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+          <!-- Slides -->
+          <div class="swiper-slide">Slide 1</div>
+          <div class="swiper-slide">Slide 2</div>
+          <div class="swiper-slide">Slide 3</div>
+          ...
+        </div>
+        <!-- If we need pagination -->
+        <div class="swiper-pagination"></div>
+
+        <!-- If we need navigation buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
+      <!--
       <div class="project-grid">
         <article class="project-grid_item animate-in">
           <a href="https://quantumcube.io" style="text-decoration: none">
@@ -713,6 +744,7 @@
           <a class="btn btn--secondary" href="https://website.psycho-bummer.workers.dev/">View</a>
         </article>
       </div>
+-->
     </section>
 
     <section class="hero-section">
@@ -766,5 +798,10 @@
           loading="lazy" />
       </a>
     </footer>
+
+    <script
+      defer
+      onload="initSwiper()"
+      src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
   </body>
 </html>
